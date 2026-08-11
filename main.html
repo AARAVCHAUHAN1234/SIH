@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GarudaKavach — Next-Gen Autonomous Drone Infrastructure Command | DECODE SIH 2026</title>
+
+<!-- libs -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="app">
+
+  <!-- toast popup box -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- top nav bar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div>
+        <div class="brand-title">
+          GarudaKavach
+          <span class="brand-badge">DECODE SIH 2026</span>
+        </div>
+        <div class="brand-sub">
+          <span>Presented by <b>HexaCoders</b></span> · 
+          <span>Autonomous Drone Infrastructure Inspector</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="audio-toggle" id="audio-toggle-btn" title="Toggle Sound FX">🔊</button>
+
+      <button class="btn-nav" id="btn-modal-problem">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        Problem &amp; Impact
+      </button>
+      <button class="btn-nav" id="btn-modal-tech">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Tech &amp; Architecture
+      </button>
+      <button class="btn-nav" id="btn-modal-team">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 1 0 7.75"/></svg>
+        HexaCoders Team
+      </button>
+
+      <!-- export dropdown -->
+      <div class="export-dropdown">
+        <button class="btn-report">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+          Export Reports ▾
+        </button>
+        <div class="dropdown-content">
+          <button class="dropdown-item" id="export-pdf-item">📄 Export PDF Report</button>
+          <button class="dropdown-item" id="export-csv-item">📊 Export CSV Data Log</button>
+          <button class="dropdown-item" id="export-json-item">🌐 Export JSON Telemetry</button>
+        </div>
+      </div>
+
+      <div class="status-pill"><span class="dot live"></span>FLEET LIVE</div>
+      <div class="clock" id="clock">--:--:--</div>
+    </div>
+  </header>
+
+  <!-- stats bar -->
+  <section class="metrics-strip">
+    <div class="metric-card" id="metric-speed">
+      <div class="metric-icon" style="background:rgba(239,68,68,0.15);color:var(--red);">⚡</div>
+      <div>
+        <div class="metric-val">80% Faster</div>
+        <div class="metric-lbl">Inspection Speed vs Manual</div>
+      </div>
+    </div>
+    <div class="metric-card" id="metric-accuracy">
+      <div class="metric-icon" style="background:rgba(16,185,129,0.15);color:var(--green);">🎯</div>
+      <div>
+        <div class="metric-val">&gt;95% Accuracy</div>
+        <div class="metric-lbl">AI Defect &amp; Crack Detection</div>
+      </div>
+    </div>
+    <div class="metric-card" id="metric-cost">
+      <div class="metric-icon" style="background:rgba(56,189,248,0.15);color:var(--cyan);">💰</div>
+      <div>
+        <div class="metric-val">40% Lower</div>
+        <div class="metric-lbl">Maintenance &amp; Inspection Cost</div>
+      </div>
+    </div>
+    <div class="metric-card" style="justify-content:space-between;">
+      <div>
+        <div class="metric-val" style="font-size:11px;color:var(--gold);">Govt Alignment</div>
+        <div style="display:flex;gap:4px;margin-top:3px;flex-wrap:wrap;">
+          <span class="gov-badge" data-gov="pm-gati">PM Gati Shakti</span>
+          <span class="gov-badge" data-gov="smart-city">Smart Cities</span>
+          <span class="gov-badge" data-gov="digital-india">Digital India</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- main 3 column layout -->
+  <div class="layout">
+
+    <!-- left side - asset list + alerts -->
+    <aside class="sidebar left">
+      <div class="panel" style="flex: 1.4;">
+        <div class="panel-head">
+          <span>Infrastructure Registry</span>
+          <button class="btn-add-asset" id="btn-open-add-asset">+ Register Asset</button>
+        </div>
+
+        <div class="registry-controls">
+          <input type="text" class="search-input" id="search-input" placeholder="🔍 Search Delhi bridges, flyovers...">
+          <div class="filter-pills">
+            <span class="filter-pill active" data-filter="all">All</span>
+            <span class="filter-pill" data-filter="critical">Needs Monitoring</span>
+            <span class="filter-pill" data-filter="bridge">Bridges</span>
+            <span class="filter-pill" data-filter="flyover">Flyovers</span>
+          </div>
+        </div>
+
+        <div class="panel-scroll" id="asset-list"></div>
+      </div>
+
+      <div class="panel" style="flex: 1; border-top: 1px solid var(--border);">
+        <div class="panel-head">
+          <span>Live Defect Alerts</span>
+          <span class="dot live" style="width:5px;height:5px;"></span>
+        </div>
+        <div class="panel-scroll" id="alert-list"></div>
+      </div>
+    </aside>
+
+    <!-- middle - map, flight bar, camera feed -->
+    <main class="map-wrap">
+      <!-- flight controls -->
+      <div class="map-flight-bar">
+        <button class="ctrl-btn active" id="btn-flight-pause">⏸ Pause Patrol</button>
+        <button class="ctrl-btn" id="btn-flight-speed">⚡ 1x Speed</button>
+        <button class="ctrl-btn" id="btn-flight-rtl">🏠 Return To Base</button>
+        <button class="ctrl-btn" id="btn-flight-scan">🎯 Waypoint Scan</button>
+        <button class="ctrl-btn" id="btn-map-tile">🗺️ Satellite View</button>
+      </div>
+
+      <!-- fake drone cam feed -->
+      <div class="drone-cam-pip" id="drone-cam-pip">
+        <img class="cam-feed" id="cam-feed-img" src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=400&q=80" crossorigin="anonymous">
+        <div class="cam-scanline"></div>
+        <div class="cam-hud-overlay">
+          <div class="cam-top-row">
+            <span><span class="cam-rec-dot"></span> CAM-01 LIVE</span>
+            <div style="display:flex;gap:4px;">
+              <button class="pip-action-btn" id="pip-snap-btn" title="Take Snapshot">📷 Snap</button>
+              <button class="pip-action-btn" id="pip-expand-btn" title="Toggle Size">⛶</button>
+            </div>
+          </div>
+          <div class="cam-mode-selector">
+            <button class="cam-mode-btn active" data-mode="rgb">RGB</button>
+            <button class="cam-mode-btn" data-mode="flir">Thermal</button>
+            <button class="cam-mode-btn" data-mode="edge">AI Edge</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="map"></div>
+
+      <!-- telemetry hud overlay -->
+      <div class="hud">
+        <div class="hud-title"><span class="dot live"></span>DRONE-01 TELEMETRY (PX4/ArduPilot)</div>
+        <div class="hud-row"><span>Altitude</span><span id="hud-alt">—</span></div>
+        <div class="hud-row"><span>Speed</span><span id="hud-spd">—</span></div>
+        <div class="hud-row"><span>Battery</span><span id="hud-batt">—</span></div>
+        <div class="hud-row"><span>GPS Coordinates</span><span id="hud-gps">—</span></div>
+        <div class="hud-row"><span>Protocol</span><span style="color:var(--cyan);">MQTT Broker</span></div>
+      </div>
+    </main>
+
+    <!-- right side tabs -->
+    <aside class="sidebar right">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="inspect">AI Inspect</button>
+        <button class="tab-btn" data-tab="twin">3D Twin</button>
+        <button class="tab-btn" data-tab="pipeline">5-Pillars</button>
+        <button class="tab-btn" data-tab="assistant">Assistant</button>
+      </div>
+
+      <!-- tab 1 - inspection -->
+      <div class="tab-panel active" id="tab-inspect">
+        <label class="field-label">Select Target Asset</label>
+        <select id="inspect-asset-select"></select>
+
+        <div class="preset-title">Select Sample Drone Image or Upload:</div>
+        <div class="preset-grid">
+          <div class="preset-thumb active" id="preset-crack" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=300&q=80');">
+            <div class="preset-lbl">Bridge Crack</div>
+          </div>
+          <div class="preset-thumb" id="preset-corrosion" style="background-image:url('https://images.unsplash.com/photo-1584467735815-f778f274e296?auto=format&fit=crop&w=300&q=80');">
+            <div class="preset-lbl">Corrosion</div>
+          </div>
+          <div class="preset-thumb" id="preset-pothole" style="background-image:url('https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=300&q=80');">
+            <div class="preset-lbl">Deck Erosion</div>
+          </div>
+        </div>
+
+        <label class="field-label">Custom Drone Image Upload</label>
+        <div class="file-drop" id="file-drop">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.8"><path d="M12 16V4m0 0L7 9m5-5l5 5M5 20h14"/></svg>
+          <span style="font-size:11.5px;font-weight:600;">Click to upload custom drone photo</span>
+          <small>Supports JPEG, PNG, WebP images</small>
+        </div>
+        <input type="file" id="inspect-file" accept="image/*" style="display:none;">
+
+        <!-- scanner animation + bounding box -->
+        <div class="inspection-preview-container">
+          <img class="preview-thumb" id="preview-thumb" src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=600&q=80" crossorigin="anonymous">
+          <div class="ai-scan-laser" id="ai-scan-laser"></div>
+          <div class="ai-bbox-overlay" id="ai-bbox" style="top:25%; left:30%; width:40%; height:45%;">
+            <span class="ai-bbox-tag" id="ai-bbox-tag">CRACK DETECTED 94%</span>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="analyze-btn">⚡ Run Real-Time AI Damage Detection</button>
+        <div class="inline-error" id="inspect-error" style="display:none;"></div>
+        <div id="result-slot"></div>
+
+        <div class="panel-head" style="padding-left:0;margin-top:14px;display:flex;justify-content:space-between;">
+          <span>Recent Inspection Findings</span>
+          <button class="btn-secondary" id="btn-reset-log" style="font-size:9.5px;padding:2px 6px;">Reset History</button>
+        </div>
+        <div id="damage-log"></div>
+      </div>
+
+      <!-- tab 2 - 3d twin -->
+      <div class="tab-panel" id="tab-twin">
+        <div class="panel-head" style="padding-left:0;margin-bottom:6px;">Interactive 3D Structural Mesh</div>
+        <div style="font-size:10.5px;color:var(--text-dim);margin-bottom:8px;">
+          Click and drag mouse to orbit 3D model. Scroll wheel to zoom in/out. Red nodes indicate structural stress points.
+        </div>
+
+        <div class="twin-canvas-wrap">
+          <canvas id="twin-canvas"></canvas>
+          <div class="twin-hud">MODEL: BRIDGE_GIRDER_3D</div>
+          <div class="twin-controls">
+            <button class="twin-btn" id="btn-twin-orbit">⏸ Orbit</button>
+            <button class="twin-btn" id="btn-twin-stress">🔥 Load Test</button>
+          </div>
+          <div class="twin-legend">
+            <span>🟢 Normal</span>
+            <span>🟡 Stress</span>
+            <span>🔴 Crack Critical</span>
+          </div>
+        </div>
+
+        <div class="stack-grid">
+          <div class="stack-card">
+            <div class="stack-card-title">Modal Frequency</div>
+            <div class="stack-card-val" id="twin-freq">4.2 Hz</div>
+            <div class="stack-card-desc">Vibration Resonance</div>
+          </div>
+          <div class="stack-card">
+            <div class="stack-card-title">Stress Strain Index</div>
+            <div class="stack-card-val" id="twin-strain">0.0024 ε</div>
+            <div class="stack-card-desc">Structural Deflection</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- tab 3 - pipeline / tech stack -->
+      <div class="tab-panel" id="tab-pipeline">
+        <div class="panel-head" style="padding-left:0;margin-bottom:8px;">Closed-Loop Infrastructure Intelligence</div>
+        <div class="pipeline-step" onclick="openModal('modal-tech')">
+          <div class="pipeline-num">1</div>
+          <div class="pipeline-text">
+            <div class="pipeline-title">Autonomous Drone Launch</div>
+            <div class="pipeline-desc">PX4/ArduPilot powered drones execute automated flight paths with GPS &amp; obstacle avoidance.</div>
+          </div>
+        </div>
+        <div class="pipeline-step" onclick="switchTab('inspect')">
+          <div class="pipeline-num">2</div>
+          <div class="pipeline-text">
+            <div class="pipeline-title">AI Damage Vision Detection</div>
+            <div class="pipeline-desc">Real-time Computer Vision models detect cracks, corrosion &amp; deck wear with &gt;95% accuracy.</div>
+          </div>
+        </div>
+        <div class="pipeline-step" onclick="switchTab('twin')">
+          <div class="pipeline-num">3</div>
+          <div class="pipeline-text">
+            <div class="pipeline-title">GIS &amp; 3D Digital Twin Mapping</div>
+            <div class="pipeline-desc">Geotagged defect mapping, PostGIS spatial data, and satellite layer integration.</div>
+          </div>
+        </div>
+        <div class="pipeline-step" onclick="openModal('modal-problem')">
+          <div class="pipeline-num">4</div>
+          <div class="pipeline-text">
+            <div class="pipeline-title">Predictive Maintenance &amp; Health Score</div>
+            <div class="pipeline-desc">AI predicts structural failures early, shifting governance from reactive to proactive.</div>
+          </div>
+        </div>
+        <div class="pipeline-step" onclick="document.getElementById('export-pdf-item').click()">
+          <div class="pipeline-num">5</div>
+          <div class="pipeline-text">
+            <div class="pipeline-title">Government Action &amp; Smart Alerts</div>
+            <div class="pipeline-desc">Automated PDF reports, instant alert dispatching to smart city authorities.</div>
+          </div>
+        </div>
+
+        <div class="panel-head" style="padding-left:0;margin-top:14px;margin-bottom:6px;">Enterprise Tech Stack</div>
+        <div class="stack-grid">
+          <div class="stack-card">
+            <div class="stack-card-title">Flight Firmware</div>
+            <div class="stack-card-val">PX4 / ArduPilot</div>
+            <div class="stack-card-desc">Autonomous Navigation</div>
+          </div>
+          <div class="stack-card">
+            <div class="stack-card-title">Drone Messaging</div>
+            <div class="stack-card-val">MQTT Protocol</div>
+            <div class="stack-card-desc">Lightweight Telemetry</div>
+          </div>
+          <div class="stack-card">
+            <div class="stack-card-title">Spatial Database</div>
+            <div class="stack-card-val">PostgreSQL + PostGIS</div>
+            <div class="stack-card-desc">GIS Coordinates</div>
+          </div>
+          <div class="stack-card">
+            <div class="stack-card-title">Cloud Infrastructure</div>
+            <div class="stack-card-val">AWS Scalable Compute</div>
+            <div class="stack-card-desc">AI Inference &amp; Storage</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- tab 4 - chatbot -->
+      <div class="tab-panel" id="tab-assistant">
+        <div class="chip-grid">
+          <span class="prompt-chip" data-query="Which bridge has lowest health score?">🚨 Urgent Repair Needed</span>
+          <span class="prompt-chip" data-query="How does GarudaKavach help PM Gati Shakti?">🏛️ Gov Alignment</span>
+          <span class="prompt-chip" data-query="Who are HexaCoders team members?">👥 Team Info</span>
+          <span class="prompt-chip" data-query="What tech stack is used?">⚙️ Tech Stack</span>
+        </div>
+        <div class="chat-log" id="chat-log"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Type a message to Garuda AI...">
+          <button class="send-btn" id="chat-send">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#041B26" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- problem modal -->
+<div class="modal-overlay" id="modal-problem">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-problem')">&times;</button>
+    <div class="modal-title">🚨 The Infrastructure Crisis India Cannot Ignore</div>
+    <div class="modal-sub">Real-World Problem Alignment &amp; Impact</div>
+    <p style="font-size:12.5px;line-height:1.6;color:var(--text-dim);">
+      Manual inspections of roads, bridges, and public assets in India are slow, risky, expensive, and inconsistent. Minor structural micro-cracks often go undetected until catastrophic failure occurs.
+    </p>
+    <div class="stack-grid" style="margin:16px 0;">
+      <div class="stack-card" style="border-left:3px solid var(--red);">
+        <div class="stack-card-title" style="color:var(--red);">Current Problem</div>
+        <div class="stack-card-val">60% Manual &amp; 3× Slower</div>
+        <div class="stack-card-desc">Traditional physical inspections are delayed and reactive.</div>
+      </div>
+      <div class="stack-card" style="border-left:3px solid var(--green);">
+        <div class="stack-card-title" style="color:var(--green);">GarudaKavach Solution</div>
+        <div class="stack-card-val">80% Faster &amp; 40% Cheaper</div>
+        <div class="stack-card-desc">Autonomous drone AI vision with proactive health scoring.</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--text);font-weight:600;margin-bottom:6px;">Target Stakeholders:</div>
+    <ul style="font-size:11.5px;color:var(--text-dim);margin:0 0 14px 18px;line-height:1.6;">
+      <li>Government Infrastructure &amp; PWD Authorities</li>
+      <li>Smart City Command &amp; Control Centers</li>
+      <li>Bridge &amp; Highway Maintenance Inspection Teams</li>
+      <li>Citizens relying on safe public transportation corridors</li>
+    </ul>
+  </div>
+</div>
+
+<!-- tech modal -->
+<div class="modal-overlay" id="modal-tech">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-tech')">&times;</button>
+    <div class="modal-title">⚙️ Tech Stack &amp; Architecture Diagram</div>
+    <div class="modal-sub">Battle-Tested Enterprise Drone Intelligence Stack</div>
+    <div style="padding:14px;background:var(--bg);border:1px solid var(--border-strong);border-radius:8px;margin-bottom:14px;font-family:var(--mono);font-size:11px;line-height:1.6;color:var(--cyan);">
+      [ Autonomous Drone ] ──(PX4 / ArduPilot)──&gt;<br>
+      [ Telemetry Stream ] ──(MQTT Broker)──&gt;<br>
+      [ Cloud Processing ] ──(AWS Scalable Compute)──&gt;<br>
+      [ AI Vision Engine ] ──(Computer Vision Defect Detection)──&gt;<br>
+      [ Spatial Database ] ──(PostgreSQL + PostGIS)──&gt;<br>
+      [ Admin Console ] ──(Next.js + Node.js Dashboard)
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);line-height:1.5;">
+      GarudaKavach integrates flight hardware, MQTT telemetry streams, GIS mapping engines, and computer vision models into one seamless web application.
+    </p>
+  </div>
+</div>
+
+<!-- team modal -->
+<div class="modal-overlay" id="modal-team">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-team')">&times;</button>
+    <div class="modal-title">👥 Presented by HexaCoders</div>
+    <div class="modal-sub">DECODE SIH 2026 Hackathon Team</div>
+    <div class="team-grid">
+      <div class="team-member"><div class="team-avatar">AS</div><div><div style="font-weight:600;font-size:12.5px;">Aaryan Singhal</div><div style="font-size:10px;color:var(--text-faint);">HexaCoders Member</div></div></div>
+      <div class="team-member"><div class="team-avatar">AC</div><div><div style="font-weight:600;font-size:12.5px;">Aarav Chauhan</div><div style="font-size:10px;color:var(--text-faint);">HexaCoders Member</div></div></div>
+      <div class="team-member"><div class="team-avatar">AG</div><div><div style="font-weight:600;font-size:12.5px;">Aarohi Gupta</div><div style="font-size:10px;color:var(--text-faint);">HexaCoders Member</div></div></div>
+      <div class="team-member"><div class="team-avatar">MS</div><div><div style="font-weight:600;font-size:12.5px;">Mohit Suri</div><div style="font-size:10px;color:var(--text-faint);">HexaCoders Member</div></div></div>
+      <div class="team-member"><div class="team-avatar">SY</div><div><div style="font-weight:600;font-size:12.5px;">Shaurya Yadav</div><div style="font-size:10px;color:var(--text-faint);">HexaCoders Member</div></div></div>
+      <div class="team-member"><div class="team-avatar">DS</div><div><div style="font-weight:600;font-size:12.5px;">Dev Singh</div><div style="font-size:10px;color:var(--text-faint);">HexaCoders Member</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- add asset modal -->
+<div class="modal-overlay" id="modal-add-asset">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-add-asset')">&times;</button>
+    <div class="modal-title">➕ Register Infrastructure Asset</div>
+    <div class="modal-sub">Add a New Bridge, Flyover or Public Corridor</div>
+    <form id="add-asset-form">
+      <label class="field-label">Asset Name</label>
+      <input type="text" class="text-input" id="new-asset-name" placeholder="e.g. Laxmi Nagar Flyover" required>
+
+      <label class="field-label">Structure Category</label>
+      <select id="new-asset-type">
+        <option value="Flyover Interchange">Flyover Interchange</option>
+        <option value="Girder Bridge">Girder Bridge</option>
+        <option value="Elevated Corridor">Elevated Corridor</option>
+        <option value="Cable-Stayed Bridge">Cable-Stayed Bridge</option>
+        <option value="Pedestrian Overpass">Pedestrian Overpass</option>
+      </select>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <label class="field-label">Latitude</label>
+          <input type="number" step="0.0001" class="text-input" id="new-asset-lat" value="28.6300" required>
+        </div>
+        <div>
+          <label class="field-label">Longitude</label>
+          <input type="number" step="0.0001" class="text-input" id="new-asset-lng" value="77.2700" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary" style="margin-top:10px;">Save &amp; Add To Drone Patrol Route</button>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

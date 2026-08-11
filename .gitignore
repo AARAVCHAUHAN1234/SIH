@@ -1,0 +1,65 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated data
+data/raw/*
+data/processed/*
+data/reconstructions/*
+data/models/*
+data/annotations/*
+
+# Keep directory structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/reconstructions/.gitkeep
+!data/models/.gitkeep
+!data/annotations/.gitkeep
+
+# Generated reports
+*.pdf
+
+# Temporary files
+tmp/
+temp/
+
+# Docker
+docker-volumes/
+
+# Coverage
+.coverage
+htmlcov/
