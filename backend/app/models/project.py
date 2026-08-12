@@ -18,7 +18,7 @@ class Project(Base):
     )
 
     name: Mapped[str] = mapped_column(
-        String(200),
+        String(255),
         nullable=False,
     )
 
@@ -27,9 +27,22 @@ class Project(Base):
         nullable=True,
     )
 
+    status: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+        default="active",
+    )
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=datetime.utcnow,
+        nullable=False,
+    )
+
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
         nullable=False,
     )
 
