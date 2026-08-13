@@ -59,3 +59,8 @@ class MediaAsset(Base):
         "Inspection",
         back_populates="media_assets",
     )
+    findings = relationship(
+    "Finding",
+    back_populates="media",
+    cascade="all, delete-orphan",
+)

@@ -55,3 +55,8 @@ class Inspection(Base):
         back_populates="inspection",
         cascade="all, delete-orphan",
     )
+    findings = relationship(
+    "Finding",
+    back_populates="inspection",
+    cascade="all, delete-orphan",
+)

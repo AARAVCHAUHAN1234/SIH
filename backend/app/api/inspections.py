@@ -52,3 +52,50 @@ def create_inspection(
         "notes": new_inspection.notes,
         "created_at": new_inspection.created_at,
     }
+
+
+# GET all inspections
+@router.get("/")
+def get_inspections(
+    db: Session = Depends(get_db),
+):
+    inspections = db.query(Inspection).all()
+
+    return {
+        "count": len(inspections),
+        "items": [
+            {
+                "id": inspection.id,
+                "bridge_id": inspection.bridge_id,
+                "name": inspection.name,
+                "status": inspection.status,
+                "notes": inspection.notes,
+                "created_at": inspection.created_at,
+            }
+            for inspection in inspections
+        ],
+    }
+
+
+# GET one inspection
+@router.get("/{inspection_id}")
+def get_inspection(
+    inspection_id: UUID,
+    db: Session = Depends(get_db),
+):
+    inspection = db.get(Inspection, inspection_id)
+
+    if not inspection:
+        raise HTTPException(
+            status_code=404,
+            detail="Inspection not found",
+        )
+
+    return {
+        "id": inspection.id,
+        "bridge_id": inspection.bridge_id,
+        "name": inspection.name,
+        "status": inspection.status,
+        "notes": inspection.notes,
+        "created_at": inspection.created_at,
+    }

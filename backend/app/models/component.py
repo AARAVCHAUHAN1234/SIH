@@ -41,3 +41,8 @@ class BridgeComponent(Base):
         "Bridge",
         back_populates="components",
     )
+    findings = relationship(
+    "Finding",
+    back_populates="component",
+    cascade="all, delete-orphan",
+)
