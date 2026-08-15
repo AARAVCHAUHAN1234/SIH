@@ -1,4 +1,3 @@
-
 from app.models.project import Project
 from app.models.bridge import Bridge
 from app.models.component import BridgeComponent
@@ -12,4 +11,5 @@ __all__ = [
     "BridgeComponent",
     "Inspection",
     "MediaAsset",
+    "Finding",
 ]

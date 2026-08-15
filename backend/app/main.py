@@ -8,6 +8,7 @@ from app.api.bridges import router as bridges_router
 from app.api.components import router as components_router
 from app.api.inspections import router as inspections_router
 from app.api.media import router as media_router
+from app.api.findings import router as findings_router
 app = FastAPI(
     title=settings.app_name,
     version="0.1.0",
@@ -19,6 +20,7 @@ app.include_router(bridges_router)
 app.include_router(components_router)
 app.include_router(inspections_router)
 app.include_router(media_router)
+app.include_router(findings_router)
 @app.get("/health")
 def health_check():
     return {
